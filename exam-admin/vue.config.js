@@ -19,7 +19,7 @@ module.exports = {
     hotOnly: false,
     proxy: {
       '/api': {
-        target: 'http://localhost:7000',
+        target: 'http://www.zhanyimusic.com',
         changeOrigin: true
       }
     }

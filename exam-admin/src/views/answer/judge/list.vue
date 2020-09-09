@@ -6,8 +6,12 @@
           <el-option v-for="item in subjects" :key="item.id" :value="item.id" :label="item.name"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="试卷名称：" >
+        <el-input v-model="queryParam.paperName"></el-input>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm">查询</el-button>
+        <el-button type="primary" @click="exportExcel">导出</el-button>
       </el-form-item>
     </el-form>
 
@@ -78,6 +82,11 @@ export default {
     submitForm () {
       this.queryParam.pageIndex = 1
       this.search()
+    },
+    exportExcel () {
+      examPaperAnswerApi.exportExcel(this.queryParam).then(data => {
+        
+      })
     },
     ...mapActions('exam', { initSubject: 'initSubject' })
   },
