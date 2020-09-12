@@ -55,7 +55,8 @@ export default {
   data () {
     return {
       queryParam: {
-        subjectId: null,
+        subjectId: '',
+        paperName: '',
         pageIndex: 1,
         pageSize: 10
       },
@@ -84,9 +85,11 @@ export default {
       this.search()
     },
     exportExcel () {
-      examPaperAnswerApi.exportExcel(this.queryParam).then(data => {
-        
-      })
+      window.open('/api/admin/examPaperAnswer/page/judge/export?subjectId=' +
+        this.queryParam.subjectId + '&paperName=' + this.queryParam.paperName + '&pageSize=' + this.queryParam.pageSize + '&pageIndex=' + this.queryParam.pageIndex)
+      // examPaperAnswerApi.exportExcel(this.queryParam).then(data => {
+      //
+      // })
     },
     ...mapActions('exam', { initSubject: 'initSubject' })
   },

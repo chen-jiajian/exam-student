@@ -1,0 +1,34 @@
+.DS_Store
+node_modules
+/exam-admin/node_modules
+/exam-admin/admin
+/exam-admin/public
+/exam-admin/admin.zip
+
+/exam-student/node_modules
+/exam-student/student
+/exam-student/public
+/exam-student/student.zip
+
+/exam-teacher/node_modules
+/exam-teacher/teacher
+/exam-teacher/teacher.zip
+/exam-teacher/public
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

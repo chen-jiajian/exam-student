@@ -2,35 +2,18 @@
   <div>
     <el-row  class="do-exam-title">
       <el-col :span="24">
-<!--        <div v-if="!form.random">-->
-<!--          <span :key="item.itemOrder"  v-for="item in answer.answerItems">-->
-<!--             <el-tag :type="questionCompleted(item.completed)" class="do-exam-title-tag" @click="goAnchor('#question-'+item.itemOrder)">{{item.itemOrder}}</el-tag>-->
-<!--         </span>-->
-<!--        </div>-->
         <span class="do-exam-time">
           <label>剩余时间：</label>
           <label>{{formatSeconds(remainTime)}}</label>
         </span>
       </el-col>
     </el-row>
-<!--    <el-row  class="do-exam-title-hidden">-->
-<!--      <el-col :span="24">-->
-<!--        <span :key="item.itemOrder"  v-for="item in answer.answerItems">-->
-<!--             <el-tag  class="do-exam-title-tag" >{{item.itemOrder}}</el-tag>-->
-<!--        </span>-->
-<!--        <span class="do-exam-time">-->
-<!--          <label>剩余时间：</label>-->
-<!--        </span>-->
-<!--      </el-col>-->
-<!--    </el-row>-->
-    <div class="topic-card-btn">
-<!--      <el-button @click="questionCard = true">答题卡</el-button>-->
-    </div>
     <el-container  class="app-item-contain">
       <el-row class="topic-btn">
-        <el-button type="primary" @click="lastTopic">上一题</el-button>
+        <el-button @click="lastTopic">上一题</el-button>
         <el-button @click="nextTopic">下一题</el-button>
-        <el-button @click="questionCard = true">答题卡</el-button>
+<!--        <el-button @click="questionCard = true">答题卡</el-button>-->
+        <el-button type="primary" @click="submitForm">提交</el-button>
       </el-row>
       <el-header class="align-center">
         <h1>{{form.name}}</h1>
@@ -80,27 +63,28 @@
 <!--            </el-card>-->
 <!--          </el-row>-->
 
-           <el-row class="do-align-center" v-if="currentIndex === normalQuestions.length - 1">
-             <el-button type="primary" @click="submitForm">提交</el-button>
+<!--           <el-row class="do-align-center" v-if="currentIndex === normalQuestions.length - 1">-->
+<!--             <el-button type="primary" @click="submitForm">提交</el-button>-->
 <!--             <el-button @click="cancelForm">取消</el-button>-->
-           </el-row>
+<!--           </el-row>-->
         </el-form>
       </el-main>
     </el-container>
-    <el-dialog
-        title="答题卡"
-        :visible.sync="questionCard"
-        width="50%">
-      <div class="card-content">
-        <span v-for="(i,idx) in normalQuestions" class="card-item" :key="i.itemOrder" @click="selectTopic(idx)">
+<!--    <el-dialog-->
+<!--        title="答题卡"-->
+<!--        :visible.sync="questionCard"-->
+<!--        width="50%">-->
+<!--      <div class="card-content">-->
+<!--        <span v-for="(i,idx) in normalQuestions" class="card-item" :key="i.itemOrder" @click="selectTopic(idx)">-->
+<!--          {{idx + 1}}-->
+<!--        </span>-->
+<!--      </div>-->
+<!--    </el-dialog>-->
+    <div class="card-content2">
+        <span v-for="(i,idx) in normalQuestions" class="card-item" :class="{active: idx === currentIndex}" :key="i.itemOrder" @click="selectTopic(idx)">
           {{idx + 1}}
         </span>
-      </div>
-<!--      <span slot="footer" class="dialog-footer">-->
-<!--        <el-button @click="questionCard = false">取 消</el-button>-->
-<!--        <el-button type="primary" @click="questionCard = false">确 定</el-button>-->
-<!--      </span>-->
-    </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -273,6 +257,7 @@ export default {
   }
   .topic-main {
     margin: 100px 0;
+    padding-right: 150px;
   }
   .topic-card-btn {
     position: fixed;
@@ -284,8 +269,47 @@ export default {
     right: 40px;
     top: 113px;
   }
+  .card-content2 {
+    position: fixed;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 200px;
+    max-height: 400px;
+    padding: 10px;
+    overflow: auto;
+    border: 1px solid #f5f5f5;
+    box-shadow: 0 0 8px 8px #f2f2f2;
+    border-radius: 10px;
+    .active {
+      background: #00b7ee;
+      color: #fff !important;
+    }
+    .card-item {
+      margin: 6px;
+      float: left;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #f5f5f5;
+      border-radius: 50%;
+      color: #777;
+      font-size: 14px;
+      /*box-shadow: 0 0 8px 8px #f2f2f2;*/
+      cursor: pointer;
+    }
+    .card-item:hover{
+      opacity: 0.7;
+    }
+    .card-item:active{
+      opacity: 1;
+    }
+  }
   .card-content {
     overflow: hidden;
+
     .card-item {
       margin: 8px;
       float: left;
