@@ -31,7 +31,7 @@
           <div class="exam-question-item">
             <span class="question-index">{{(currentIndex + 1)+'.'}}</span>
             <QuestionEdit :qType="topicItem.questionType" :question="topicItem"
-                          :answer="answer.answerItems[topicItem.itemOrder-1]"/>
+                          :answer="answer.answerItems[currentIndex]"/>
           </div>
 <!--          <el-form-item :label="topicItem.itemOrder+'.'"-->
 <!--                        class="exam-question-item" label-width="50px" :id="'question-'+ topicItem.itemOrder">-->
@@ -81,7 +81,7 @@
 <!--      </div>-->
 <!--    </el-dialog>-->
     <div class="card-content2">
-        <span v-for="(i,idx) in normalQuestions" class="card-item" :class="{active: idx === currentIndex}" :key="i.itemOrder" @click="selectTopic(idx)">
+        <span v-for="(i,idx) in answer.answerItems" class="card-item" :class="{active: idx === currentIndex, edited: i.content || i.contentArray.length}" :key="i.itemOrder" @click="selectTopic(idx)">
           {{idx + 1}}
         </span>
     </div>
@@ -172,32 +172,43 @@ export default {
           let question = questionArray[qIndex]
           this.randomQuestions.push(question)
           this.normalQuestions.push(question)
-          this.answer.answerItems.push({ questionId: question.id, content: null, contentArray: [], completed: false, itemOrder: question.itemOrder })
+          // this.answer.answerItems.push({ questionId: question.id, content: null, contentArray: [], completed: false, itemOrder: question.itemOrder })
         }
       }
       if (this.form.random) {
         this.normalQuestions.sort(() => Math.random() - 0.5)
         this.randomQuestions.sort(() => Math.random() - 0.5)
       }
+      this.answer.answerItems = this.normalQuestions.map(item => {
+        return {
+          questionId: item.id, content: null, contentArray: [], completed: false, itemOrder: item.itemOrder
+        }
+      })
     },
     submitForm () {
-      let _this = this
-      window.clearInterval(_this.timer)
-      _this.formLoading = true
-      examPaperAnswerApi.answerSubmit(this.answer).then(re => {
-        if (re.code === 1) {
-          _this.$alert('试卷得分：' + re.response + '分', '考试结果', {
-            confirmButtonText: '返回考试记录',
-            callback: action => {
-              _this.$router.push('/record/index')
-            }
-          })
-        } else {
-          _this.$message.error(re.message)
-        }
-        _this.formLoading = false
-      }).catch(e => {
-        _this.formLoading = false
+      this.$confirm('确定提交吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let _this = this
+        window.clearInterval(_this.timer)
+        _this.formLoading = true
+        examPaperAnswerApi.answerSubmit(this.answer).then(re => {
+          if (re.code === 1) {
+            _this.$alert('试卷得分：' + re.response + '分', '考试结果', {
+              confirmButtonText: '返回考试记录',
+              callback: action => {
+                _this.$router.push('/record/index')
+              }
+            })
+          } else {
+            _this.$message.error(re.message)
+          }
+          _this.formLoading = false
+        }).catch(e => {
+          _this.formLoading = false
+        })
       })
     },
     cancelForm () {
@@ -281,9 +292,13 @@ export default {
     border: 1px solid #f5f5f5;
     box-shadow: 0 0 8px 8px #f2f2f2;
     border-radius: 10px;
-    .active {
+    .edited {
       background: #00b7ee;
       color: #fff !important;
+    }
+    .active {
+      border: 1px solid #00b7ee !important;
+      /*color: #00b7ee !important;*/
     }
     .card-item {
       margin: 6px;
