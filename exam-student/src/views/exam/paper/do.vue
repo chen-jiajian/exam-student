@@ -127,7 +127,7 @@ export default {
         let aesKey = rsaDecryptStr(process.env.VUE_APP_QuestionPrivateKey, re.message)
         let content = aesDecryptStr(aesKey, re.response)
         _this.form = JSON.parse(content)
-        _this.remainTime = 10 // _this.form.suggestTime * 60
+        _this.remainTime = _this.form.suggestTime * 60
         _this.initAnswer()
         _this.timeReduce()
         _this.formLoading = false
