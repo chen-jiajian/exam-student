@@ -127,7 +127,7 @@ export default {
         let aesKey = rsaDecryptStr(process.env.VUE_APP_QuestionPrivateKey, re.message)
         let content = aesDecryptStr(aesKey, re.response)
         _this.form = JSON.parse(content)
-        _this.remainTime = _this.form.suggestTime * 60
+        _this.remainTime = 10 // _this.form.suggestTime * 60
         _this.initAnswer()
         _this.timeReduce()
         _this.formLoading = false
@@ -149,7 +149,7 @@ export default {
       this.timer = setInterval(function () {
         if (!_this.formLoading) {
           if (_this.remainTime <= 0) {
-            _this.submitForm()
+            _this.autoSubmitForm()
           } else {
             ++_this.answer.doTime
             --_this.remainTime
@@ -209,6 +209,26 @@ export default {
         }).catch(e => {
           _this.formLoading = false
         })
+      })
+    },
+    autoSubmitForm () {
+      let _this = this
+      window.clearInterval(_this.timer)
+      _this.formLoading = true
+      examPaperAnswerApi.answerSubmit(this.answer).then(re => {
+        if (re.code === 1) {
+          _this.$alert('试卷得分：' + re.response + '分', '考试结果', {
+            confirmButtonText: '返回考试记录',
+            callback: action => {
+              _this.$router.push('/record/index')
+            }
+          })
+        } else {
+          _this.$message.error(re.message)
+        }
+        _this.formLoading = false
+      }).catch(e => {
+        _this.formLoading = false
       })
     },
     cancelForm () {
