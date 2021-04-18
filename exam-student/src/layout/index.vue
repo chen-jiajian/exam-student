@@ -34,6 +34,9 @@
     <el-main class="student-main">
       <router-view/>
     </el-main>
+    <div class="footer">
+      主体备案号：<a href="https://beian.miit.gov.cn/#/Integrated/index">粤ICP备20064308号</a>
+    </div>
     <!--<el-footer height="340" class="student-footer">
       <div class="container">
         <div class="footer-main">
@@ -113,5 +116,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.footer {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  a {
+    cursor: pointer;
+  }
+}
 </style>

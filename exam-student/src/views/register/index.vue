@@ -35,6 +35,11 @@
           </el-form>
         </div>
       </div>
+
+    </div>
+    <div class="footer">
+      <span>主体备案号：</span>
+      <a href="https://beian.miit.gov.cn/#/Integrated/index">粤ICP备20064308号</a>
     </div>
   </div>
 </template>
@@ -80,6 +85,19 @@ export default {
     .el-input__inner {
       background-color: transparent !important;
       border: 0px !important;
+    }
+  }
+  .footer {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 10px;
+    a {
+      margin: 0 !important;
+
     }
   }
 </style>
